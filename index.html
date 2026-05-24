@@ -96,13 +96,16 @@
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 15rem;
     font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 4px;
     line-height: 1;
     margin-bottom: 20px;
     color: var(--text);
     user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
   }
+  .timer-display .td { display: inline-block; width: 0.65em; text-align: center; }
+  .timer-display .tc { display: inline-block; width: 0.3em; text-align: center; }
   .timer-display.over { color: var(--phase-over); }
 
   .elapsed-display { font-size: 2rem; color: var(--text-sub); margin-bottom: 12px; }
@@ -377,7 +380,7 @@
 
     <div class="phase-indicator phase-idle" id="phaseIndicator">待機中</div>
 
-    <div class="timer-display" id="timerDisplay">00:00</div>
+    <div class="timer-display" id="timerDisplay"><span class="td">0</span><span class="td">0</span><span class="tc">:</span><span class="td">0</span><span class="td">0</span></div>
     <div class="elapsed-display">
       経過時間: <span id="agendaTotalDisplay">00:00</span> / <span id="agendaLimitDisplay">00:00</span>
     </div>
@@ -998,10 +1001,10 @@ function updateTimerDisplay() {
   const displayEl = document.getElementById('timerDisplay');
 
   if (remaining >= 0) {
-    displayEl.textContent = formatSec(Math.ceil(remaining));
+    displayEl.innerHTML = formatSecHtml(Math.ceil(remaining));
     displayEl.classList.remove('over');
   } else {
-    displayEl.textContent = '-' + formatSec(Math.ceil(Math.abs(remaining)));
+    displayEl.innerHTML = '<span class="tc">-</span>' + formatSecHtml(Math.ceil(Math.abs(remaining)));
     displayEl.classList.add('over');
   }
 
@@ -1100,7 +1103,7 @@ function resetCurrentAgenda() {
   agenda.actualSummary = null;
   agenda.status = 'pending';
 
-  document.getElementById('timerDisplay').textContent = '00:00';
+  document.getElementById('timerDisplay').innerHTML = formatSecHtml(0);
   document.getElementById('timerDisplay').classList.remove('over');
   document.getElementById('elapsedDisplay').textContent = '00:00';
   resetProgressBar();
@@ -1238,6 +1241,11 @@ function formatSec(sec) {
   const m = Math.floor(abs / 60);
   const s = abs % 60;
   return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+
+function formatSecHtml(sec) {
+  const str = formatSec(sec);
+  return str.split('').map(c => c === ':' ? '<span class="tc">:</span>' : '<span class="td">' + c + '</span>').join('');
 }
 
 function escapeHtml(str) {
