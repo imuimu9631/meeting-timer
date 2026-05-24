@@ -231,17 +231,17 @@ function getSummary() {
   };
 }
 
-// ===== 秒数を「○分○○秒」形式に変換 =====
+// ===== 秒数を H:MM:SS 形式に変換 =====
 function formatSecToMinSec(totalSec) {
   if (totalSec == null || totalSec === '') return '';
   const num = Number(totalSec);
   if (isNaN(num)) return totalSec;
   const negative = num < 0;
   const abs = Math.abs(num);
-  const min = Math.floor(abs / 60);
-  const sec = abs % 60;
-  const secStr = String(sec).padStart(2, '0');
-  const formatted = min + '分' + secStr + '秒';
+  const h = Math.floor(abs / 3600);
+  const m = Math.floor((abs % 3600) / 60);
+  const s = abs % 60;
+  const formatted = h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
   return negative ? '-' + formatted : formatted;
 }
 

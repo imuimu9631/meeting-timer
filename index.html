@@ -890,18 +890,18 @@ function endPhase() {
     agenda.actualProposal = Math.round(phaseElapsed);
     state.currentPhase = 'discussion';
     state.phaseStartTime = Date.now();
-    bellsFired = {}; // 次フェーズの自動ベルをリセット
+    bellsFired = { 1: true }; // ベル1(提案終了)は鳴らし済みにして二重発火を防止
   } else if (state.currentPhase === 'discussion') {
     agenda.actualDiscussion = Math.round(phaseElapsed);
     state.currentPhase = 'summary';
     state.phaseStartTime = Date.now();
-    bellsFired = {};
+    bellsFired = { 1: true, 2: true }; // ベル1,2は鳴らし済み
   } else if (state.currentPhase === 'summary') {
     agenda.actualSummary = Math.round(phaseElapsed);
     agenda.status = 'done';
     state.running = false;
     state.currentPhase = null;
-    bellsFired = {};
+    bellsFired = { 1: true, 2: true, 3: true }; // 全ベル鳴らし済み
     clearInterval(state.timerInterval);
     renderRecordTable();
   }
