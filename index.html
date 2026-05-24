@@ -4,24 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>経営会議タイマー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --phase-proposal: #6B8F71;
-    --phase-discussion: #C4A35A;
-    --phase-summary: #8B7B8B;
-    --phase-over: #C0392B;
-    --bg: #F5F0EB;
+    --phase-proposal: #C96442;
+    --phase-discussion: #D4A843;
+    --phase-summary: #6B6560;
+    --phase-over: #dc2626;
+    --bg: #F5F0E8;
     --bg-card: #FFFFFF;
-    --border: #DDD5CC;
-    --text: #3A3A3A;
-    --text-sub: #888;
-    --accent: #6B8F71;
+    --border: #DDD7CC;
+    --text: #2D2A26;
+    --text-sub: #6B6560;
+    --accent: #C96442;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Hiragino Sans', 'Segoe UI', 'Meiryo', sans-serif;
+    font-family: 'Noto Sans JP', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -48,7 +51,7 @@
     cursor: pointer;
     font-size: 0.8rem;
   }
-  .settings-btn:hover { background: #f0ebe6; }
+  .settings-btn:hover { opacity: 0.7; }
 
   .main-container { display: flex; flex: 1; overflow: hidden; }
 
@@ -78,7 +81,7 @@
     font-size: 1.6rem;
     font-weight: 600;
     padding: 8px 40px;
-    border-radius: 24px;
+    border-radius: 12px;
     margin-bottom: 8px;
     letter-spacing: 2px;
     transition: all 0.3s;
@@ -86,13 +89,8 @@
   .phase-proposal { background: var(--phase-proposal); color: #fff; }
   .phase-discussion { background: var(--phase-discussion); color: #fff; }
   .phase-summary { background: var(--phase-summary); color: #fff; }
-  .phase-over { background: var(--phase-over); color: #fff; animation: pulse 1s infinite; }
+  .phase-over { background: var(--phase-over); color: #fff; }
   .phase-idle { background: #ccc; color: #777; }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
 
   .timer-display {
     font-size: 15rem;
@@ -112,7 +110,7 @@
     width: 80%;
     max-width: 700px;
     height: 10px;
-    background: #e0dbd5;
+    background: #DDD7CC;
     border-radius: 5px;
     margin-bottom: 16px;
     overflow: hidden;
@@ -179,7 +177,7 @@
     cursor: pointer;
     font-size: 0.9rem;
   }
-  .sidebar-toggle:hover { background: #f0ebe6; }
+  .sidebar-toggle:hover { opacity: 0.7; }
 
   .sidebar-tabs { display: flex; border-bottom: 1px solid var(--border); }
   .sidebar-tab {
@@ -206,7 +204,7 @@
   .form-group select {
     width: 100%;
     padding: 7px 10px;
-    background: #FAFAF7;
+    background: #FAF7F2;
     border: 1px solid var(--border);
     border-radius: 4px;
     color: var(--text);
@@ -219,20 +217,20 @@
     padding: 8px 10px;
     border-radius: 4px;
     margin-bottom: 4px;
-    background: #FAFAF7;
+    background: #FAF7F2;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.85rem;
     border: 1.5px solid transparent;
   }
-  .agenda-list li.current { border-color: var(--accent); background: #f0f5f0; }
+  .agenda-list li.current { border-color: var(--accent); background: #F0EBE3; }
   .agenda-list li.done { opacity: 0.45; }
   .agenda-list li .time-badge {
     font-size: 0.7rem;
     padding: 2px 7px;
     border-radius: 8px;
-    background: #e8e3dd;
+    background: #DDD7CC;
   }
   .agenda-list li.done .time-badge { background: var(--accent); color: #fff; }
   .agenda-list li.over-time .time-badge { background: var(--phase-over); color: #fff; }
@@ -240,7 +238,7 @@
   .add-agenda-btn {
     width: 100%;
     padding: 8px;
-    background: #FAFAF7;
+    background: #FAF7F2;
     border: 1px dashed var(--border);
     border-radius: 4px;
     color: var(--text-sub);
@@ -248,7 +246,7 @@
     font-size: 0.8rem;
     margin-top: 6px;
   }
-  .add-agenda-btn:hover { background: #f0ebe6; }
+  .add-agenda-btn:hover { opacity: 0.7; }
 
   .record-table { width: 100%; font-size: 0.75rem; border-collapse: collapse; }
   .record-table th, .record-table td {
@@ -281,7 +279,7 @@
     width: 460px;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
   .modal h2 { font-size: 1rem; margin-bottom: 14px; color: var(--text); }
   .modal .form-group { margin-bottom: 10px; }
