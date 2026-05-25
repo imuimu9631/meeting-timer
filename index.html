@@ -1012,14 +1012,23 @@ function updateTimerDisplay() {
   // Phase progress bar
   updateProgressBar(agenda, totalElapsed);
 
-  // 議題合計経過時間ベースで自動ベル
-  const bell1At = agenda.proposalMin * 60;                                    // 提案終了時刻
-  const bell2At = (agenda.proposalMin + agenda.discussionMin) * 60;           // 議論終了時刻
-  const bell3At = (agenda.proposalMin + agenda.discussionMin + agenda.summaryMin) * 60; // まとめ終了時刻
+  // 議題合計経過時間ベースで自動ベル（フェーズ内の経過のみで判定）
+  // 各フェーズの予定終了時刻
+  const bell1At = agenda.proposalMin * 60;
+  const bell2At = (agenda.proposalMin + agenda.discussionMin) * 60;
+  const bell3At = (agenda.proposalMin + agenda.discussionMin + agenda.summaryMin) * 60;
 
-  if (totalElapsed >= bell1At && !bellsFired[1]) { bellsFired[1] = true; playDeskBell(1); }
-  if (totalElapsed >= bell2At && !bellsFired[2]) { bellsFired[2] = true; playDeskBell(2); }
-  if (totalElapsed >= bell3At && !bellsFired[3]) { bellsFired[3] = true; playDeskBell(3); }
+  // 現在のフェーズに対応するベルのみ、時間経過で鳴らす
+  // 手動でフェーズを終了した場合、bellsFiredに済みマークが付いているのでスキップされる
+  if (state.currentPhase === 'proposal' && phaseElapsed >= agenda.proposalMin * 60 && !bellsFired[1]) {
+    bellsFired[1] = true; playDeskBell(1);
+  }
+  if (state.currentPhase === 'discussion' && phaseElapsed >= agenda.discussionMin * 60 && !bellsFired[2]) {
+    bellsFired[2] = true; playDeskBell(2);
+  }
+  if (state.currentPhase === 'summary' && phaseElapsed >= agenda.summaryMin * 60 && !bellsFired[3]) {
+    bellsFired[3] = true; playDeskBell(3);
+  }
 }
 
 function updateProgressBar(agenda, totalElapsed) {
