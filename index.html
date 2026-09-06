@@ -4,27 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>経営会議タイマー</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Noto+Serif+JP:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --phase-proposal: #C96442;
-    --phase-discussion: #D4A843;
-    --phase-summary: #6B6560;
-    --phase-over: #dc2626;
-    --bg: #F5F0E8;
+    --phase-proposal: #6B8F71;
+    --phase-discussion: #C4A35A;
+    --phase-summary: #8B7B8B;
+    --phase-over: #C0392B;
+    --bg: #F5F0EB;
     --bg-card: #FFFFFF;
-    --border: #DDD7CC;
+    --border: #DDD5CC;
     --text: #3A3A3A;
-    --text-sub: #6B6560;
-    --accent: #C96442;
+    --text-sub: #888;
+    --accent: #6B8F71;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Hiragino Sans', 'Segoe UI', 'Meiryo', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -51,7 +48,7 @@
     cursor: pointer;
     font-size: 0.8rem;
   }
-  .settings-btn:hover { opacity: 0.7; }
+  .settings-btn:hover { background: #f0ebe6; }
 
   .main-container { display: flex; flex: 1; overflow: hidden; }
 
@@ -81,7 +78,7 @@
     font-size: 1.6rem;
     font-weight: 600;
     padding: 8px 40px;
-    border-radius: 12px;
+    border-radius: 24px;
     margin-bottom: 8px;
     letter-spacing: 2px;
     transition: all 0.3s;
@@ -89,11 +86,15 @@
   .phase-proposal { background: var(--phase-proposal); color: #fff; }
   .phase-discussion { background: var(--phase-discussion); color: #fff; }
   .phase-summary { background: var(--phase-summary); color: #fff; }
-  .phase-over { background: var(--phase-over); color: #fff; }
+  .phase-over { background: var(--phase-over); color: #fff; animation: pulse 1s infinite; }
   .phase-idle { background: #ccc; color: #777; }
 
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
   .timer-display {
-    font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
     font-size: 15rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
@@ -111,7 +112,7 @@
     width: 80%;
     max-width: 700px;
     height: 10px;
-    background: #DDD7CC;
+    background: #e0dbd5;
     border-radius: 5px;
     margin-bottom: 16px;
     overflow: hidden;
@@ -178,7 +179,7 @@
     cursor: pointer;
     font-size: 0.9rem;
   }
-  .sidebar-toggle:hover { opacity: 0.7; }
+  .sidebar-toggle:hover { background: #f0ebe6; }
 
   .sidebar-tabs { display: flex; border-bottom: 1px solid var(--border); }
   .sidebar-tab {
@@ -205,7 +206,7 @@
   .form-group select {
     width: 100%;
     padding: 7px 10px;
-    background: #FAF7F2;
+    background: #FAFAF7;
     border: 1px solid var(--border);
     border-radius: 4px;
     color: var(--text);
@@ -218,42 +219,28 @@
     padding: 8px 10px;
     border-radius: 4px;
     margin-bottom: 4px;
-    background: #FAF7F2;
+    background: #FAFAF7;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.85rem;
     border: 1.5px solid transparent;
-    cursor: pointer;
-    user-select: none;
   }
-  .agenda-list li.current { border-color: var(--accent); background: #F0EBE3; }
-  .agenda-list li.done { opacity: 0.45; cursor: default; }
+  .agenda-list li.current { border-color: var(--accent); background: #f0f5f0; }
+  .agenda-list li.done { opacity: 0.45; }
   .agenda-list li .time-badge {
     font-size: 0.7rem;
     padding: 2px 7px;
     border-radius: 8px;
-    background: #DDD7CC;
+    background: #e8e3dd;
   }
   .agenda-list li.done .time-badge { background: var(--accent); color: #fff; }
   .agenda-list li.over-time .time-badge { background: var(--phase-over); color: #fff; }
-  .agenda-list li.drag-over { border-color: var(--accent); border-style: dashed; }
-  .agenda-list li.dragging { opacity: 0.4; }
-  .agenda-list li .drag-handle {
-    cursor: grab;
-    color: #bbb;
-    margin-right: 6px;
-    font-size: 0.8rem;
-    flex-shrink: 0;
-  }
-  .agenda-list li .drag-handle:active { cursor: grabbing; }
-  .agenda-list li .agenda-left { display: flex; align-items: center; flex: 1; overflow: hidden; }
-  .agenda-list li .agenda-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .add-agenda-btn {
     width: 100%;
     padding: 8px;
-    background: #FAF7F2;
+    background: #FAFAF7;
     border: 1px dashed var(--border);
     border-radius: 4px;
     color: var(--text-sub);
@@ -261,7 +248,7 @@
     font-size: 0.8rem;
     margin-top: 6px;
   }
-  .add-agenda-btn:hover { opacity: 0.7; }
+  .add-agenda-btn:hover { background: #f0ebe6; }
 
   .record-table { width: 100%; font-size: 0.75rem; border-collapse: collapse; }
   .record-table th, .record-table td {
@@ -294,7 +281,7 @@
     width: 460px;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   }
   .modal h2 { font-size: 1rem; margin-bottom: 14px; color: var(--text); }
   .modal .form-group { margin-bottom: 10px; }
@@ -463,44 +450,6 @@
     <div class="export-area">
       <button class="btn-export" id="btnExport" onclick="exportToSheet()" disabled>スプレッドシートに送信</button>
     </div>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Agenda Modal -->
-<div class="modal-overlay" id="editAgendaModal">
-  <div class="modal">
-    <h2>議題を編集</h2>
-    <input type="hidden" id="editAgendaIndex">
-    <div class="form-group">
-      <label>議題名</label>
-      <input type="text" id="editTitle">
-    </div>
-    <div class="form-group">
-      <label>提案者</label>
-      <select id="editProposer"></select>
-    </div>
-    <div class="form-group">
-      <label>ジャンル</label>
-      <select id="editCategory"></select>
-    </div>
-    <div class="form-group" style="display:flex;gap:8px;">
-      <div style="flex:1">
-        <label>提案(分)</label>
-        <input type="number" id="editProposalMin" min="0" max="30" style="width:100%">
-      </div>
-      <div style="flex:1">
-        <label>議論(分)</label>
-        <input type="number" id="editDiscussionMin" min="0" max="60" style="width:100%">
-      </div>
-      <div style="flex:1">
-        <label>まとめ(分)</label>
-        <input type="number" id="editSummaryMin" min="0" max="30" style="width:100%">
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-cancel" onclick="closeEditAgendaModal()">キャンセル</button>
-      <button class="btn btn-save" onclick="saveEditAgenda()">保存</button>
     </div>
   </div>
 </div>
@@ -804,52 +753,12 @@ function renderAgendaList() {
     const totalActual = (a.actualProposal || 0) + (a.actualDiscussion || 0) + (a.actualSummary || 0);
     if (a.status === 'done' && totalActual > totalPlanned) li.classList.add('over-time');
 
-    // ドラッグハンドル（pending のみ）
     const leftDiv = document.createElement('div');
-    leftDiv.className = 'agenda-left';
-
-    if (a.status === 'pending') {
-      const handle = document.createElement('span');
-      handle.className = 'drag-handle';
-      handle.textContent = '⠿';
-      leftDiv.appendChild(handle);
-
-      // ドラッグ&ドロップ
-      li.draggable = true;
-      li.dataset.index = i;
-      li.addEventListener('dragstart', (e) => {
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', i);
-        li.classList.add('dragging');
-      });
-      li.addEventListener('dragend', () => li.classList.remove('dragging'));
-      li.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        li.classList.add('drag-over');
-      });
-      li.addEventListener('dragleave', () => li.classList.remove('drag-over'));
-      li.addEventListener('drop', (e) => {
-        e.preventDefault();
-        li.classList.remove('drag-over');
-        const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
-        const toIdx = i;
-        if (fromIdx !== toIdx) moveAgenda(fromIdx, toIdx);
-      });
-    }
-
-    const titleSpan = document.createElement('span');
-    titleSpan.className = 'agenda-title';
-    titleSpan.innerHTML = `<strong>${i + 1}.</strong> ${escapeHtml(a.title)}`;
-    leftDiv.appendChild(titleSpan);
-
-    // タップで編集（pending のみ）
-    if (a.status === 'pending') {
-      li.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-agenda')) return;
-        openEditAgendaModal(i);
-      });
-    }
+    leftDiv.innerHTML = `<strong>${i + 1}.</strong> ${escapeHtml(a.title)}`;
+    leftDiv.style.flex = '1';
+    leftDiv.style.overflow = 'hidden';
+    leftDiv.style.textOverflow = 'ellipsis';
+    leftDiv.style.whiteSpace = 'nowrap';
 
     const rightDiv = document.createElement('div');
     rightDiv.style.display = 'flex';
@@ -876,70 +785,6 @@ function renderAgendaList() {
     li.appendChild(rightDiv);
     ul.appendChild(li);
   });
-}
-
-// 議題の並び替え
-function moveAgenda(fromIdx, toIdx) {
-  const item = state.agendas.splice(fromIdx, 1)[0];
-  state.agendas.splice(toIdx, 0, item);
-  if (state.currentIndex === fromIdx) state.currentIndex = toIdx;
-  else if (fromIdx < state.currentIndex && toIdx >= state.currentIndex) state.currentIndex--;
-  else if (fromIdx > state.currentIndex && toIdx <= state.currentIndex) state.currentIndex++;
-  renderAgendaList();
-}
-
-// 議題の編集モーダル
-function openEditAgendaModal(index) {
-  const a = state.agendas[index];
-  if (!a || a.status !== 'pending') return;
-
-  document.getElementById('editAgendaIndex').value = index;
-  document.getElementById('editTitle').value = a.title;
-
-  // 提案者セレクト
-  const proposerSelect = document.getElementById('editProposer');
-  proposerSelect.innerHTML = '<option value="">-- 選択 --</option>';
-  const srcProposer = document.getElementById('selectProposer');
-  Array.from(srcProposer.options).forEach(opt => {
-    if (opt.value) proposerSelect.innerHTML += `<option value="${escapeHtml(opt.value)}">${escapeHtml(opt.textContent)}</option>`;
-  });
-  proposerSelect.value = a.proposer;
-
-  // ジャンルセレクト
-  const categorySelect = document.getElementById('editCategory');
-  categorySelect.innerHTML = '<option value="">-- 選択 --</option>';
-  const srcCategory = document.getElementById('selectCategory');
-  Array.from(srcCategory.options).forEach(opt => {
-    if (opt.value) categorySelect.innerHTML += `<option value="${escapeHtml(opt.value)}">${escapeHtml(opt.textContent)}</option>`;
-  });
-  categorySelect.value = a.category;
-
-  document.getElementById('editProposalMin').value = a.proposalMin;
-  document.getElementById('editDiscussionMin').value = a.discussionMin;
-  document.getElementById('editSummaryMin').value = a.summaryMin;
-
-  document.getElementById('editAgendaModal').classList.add('show');
-}
-
-function saveEditAgenda() {
-  const index = parseInt(document.getElementById('editAgendaIndex').value);
-  const a = state.agendas[index];
-  if (!a) return;
-
-  a.title = document.getElementById('editTitle').value.trim();
-  a.proposer = document.getElementById('editProposer').value;
-  a.category = document.getElementById('editCategory').value;
-  a.proposalMin = parseInt(document.getElementById('editProposalMin').value) || 3;
-  a.discussionMin = parseInt(document.getElementById('editDiscussionMin').value) || 6;
-  a.summaryMin = parseInt(document.getElementById('editSummaryMin').value) || 1;
-
-  document.getElementById('editAgendaModal').classList.remove('show');
-  renderAgendaList();
-  updateButtons();
-}
-
-function closeEditAgendaModal() {
-  document.getElementById('editAgendaModal').classList.remove('show');
 }
 
 // ===== Timer Logic =====
@@ -1012,23 +857,14 @@ function updateTimerDisplay() {
   // Phase progress bar
   updateProgressBar(agenda, totalElapsed);
 
-  // 議題合計経過時間ベースで自動ベル（フェーズ内の経過のみで判定）
-  // 各フェーズの予定終了時刻
-  const bell1At = agenda.proposalMin * 60;
-  const bell2At = (agenda.proposalMin + agenda.discussionMin) * 60;
-  const bell3At = (agenda.proposalMin + agenda.discussionMin + agenda.summaryMin) * 60;
+  // 議題合計経過時間ベースで自動ベル
+  const bell1At = agenda.proposalMin * 60;                                    // 提案終了時刻
+  const bell2At = (agenda.proposalMin + agenda.discussionMin) * 60;           // 議論終了時刻
+  const bell3At = (agenda.proposalMin + agenda.discussionMin + agenda.summaryMin) * 60; // まとめ終了時刻
 
-  // 現在のフェーズに対応するベルのみ、時間経過で鳴らす
-  // 手動でフェーズを終了した場合、bellsFiredに済みマークが付いているのでスキップされる
-  if (state.currentPhase === 'proposal' && phaseElapsed >= agenda.proposalMin * 60 && !bellsFired[1]) {
-    bellsFired[1] = true; playDeskBell(1);
-  }
-  if (state.currentPhase === 'discussion' && phaseElapsed >= agenda.discussionMin * 60 && !bellsFired[2]) {
-    bellsFired[2] = true; playDeskBell(2);
-  }
-  if (state.currentPhase === 'summary' && phaseElapsed >= agenda.summaryMin * 60 && !bellsFired[3]) {
-    bellsFired[3] = true; playDeskBell(3);
-  }
+  if (totalElapsed >= bell1At && !bellsFired[1]) { bellsFired[1] = true; playDeskBell(1); }
+  if (totalElapsed >= bell2At && !bellsFired[2]) { bellsFired[2] = true; playDeskBell(2); }
+  if (totalElapsed >= bell3At && !bellsFired[3]) { bellsFired[3] = true; playDeskBell(3); }
 }
 
 function updateProgressBar(agenda, totalElapsed) {
@@ -1056,18 +892,18 @@ function endPhase() {
     agenda.actualProposal = Math.round(phaseElapsed);
     state.currentPhase = 'discussion';
     state.phaseStartTime = Date.now();
-    bellsFired = { 1: true }; // ベル1(提案終了)は鳴らし済みにして二重発火を防止
+    bellsFired = {}; // 次フェーズの自動ベルをリセット
   } else if (state.currentPhase === 'discussion') {
     agenda.actualDiscussion = Math.round(phaseElapsed);
     state.currentPhase = 'summary';
     state.phaseStartTime = Date.now();
-    bellsFired = { 1: true, 2: true }; // ベル1,2は鳴らし済み
+    bellsFired = {};
   } else if (state.currentPhase === 'summary') {
     agenda.actualSummary = Math.round(phaseElapsed);
     agenda.status = 'done';
     state.running = false;
     state.currentPhase = null;
-    bellsFired = { 1: true, 2: true, 3: true }; // 全ベル鳴らし済み
+    bellsFired = {};
     clearInterval(state.timerInterval);
     renderRecordTable();
   }
@@ -1247,11 +1083,6 @@ function formatSec(sec) {
   const m = Math.floor(abs / 60);
   const s = abs % 60;
   return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-}
-
-function formatSecHtml(sec) {
-  const str = formatSec(sec);
-  return str.split('').map(c => c === ':' ? '<span class="tc">:</span>' : '<span class="td">' + c + '</span>').join('');
 }
 
 function escapeHtml(str) {
