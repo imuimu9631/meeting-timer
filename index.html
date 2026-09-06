@@ -539,8 +539,8 @@ function toggleSidebar() {
   btn.innerHTML = sb.classList.contains('collapsed') ? '&#9776; 議題' : '&#10005; 閉じる';
 }
 
-// 自動ベル: 議題合計経過時間ベースで鳴らす
-// bellsFired: { 1: true, 2: true, 3: true } — 鳴らし済みのベル番号
+// 自動ベル: 議題の合計経過時間だけを基準に鳴らす
+// bellsFired: 発火済みのベルイベントID
 let bellsFired = {};
 
 // ===== Init =====
@@ -857,14 +857,32 @@ function updateTimerDisplay() {
   // Phase progress bar
   updateProgressBar(agenda, totalElapsed);
 
-  // 議題合計経過時間ベースで自動ベル
-  const bell1At = agenda.proposalMin * 60;                                    // 提案終了時刻
-  const bell2At = (agenda.proposalMin + agenda.discussionMin) * 60;           // 議論終了時刻
-  const bell3At = (agenda.proposalMin + agenda.discussionMin + agenda.summaryMin) * 60; // まとめ終了時刻
+  // 自動ベルは議題の合計経過時間だけで判定する。
+  // 提案終了、議論終了、まとめ終了の順に1回・2回・3回鳴らす。
+  const bellSchedule = [
+    { id: 'proposal-end', at: agenda.proposalMin * 60, count: 1 },
+    { id: 'discussion-end', at: (agenda.proposalMin + agenda.discussionMin) * 60, count: 2 },
+    { id: 'summary-end', at: totalLimitSec, count: 3 },
+  ];
 
-  if (totalElapsed >= bell1At && !bellsFired[1]) { bellsFired[1] = true; playDeskBell(1); }
-  if (totalElapsed >= bell2At && !bellsFired[2]) { bellsFired[2] = true; playDeskBell(2); }
-  if (totalElapsed >= bell3At && !bellsFired[3]) { bellsFired[3] = true; playDeskBell(3); }
+  bellSchedule.forEach(({ id, at, count }) => {
+    if (totalElapsed >= at && !bellsFired[id]) {
+      bellsFired[id] = true;
+      playDeskBell(count);
+    }
+  });
+
+  // 設定時間を超過した後は、5分ごとにベル2回・3回を交互に鳴らす。
+  if (totalElapsed >= totalLimitSec) {
+    const overtimeBellNo = Math.floor((totalElapsed - totalLimitSec) / (5 * 60));
+    for (let i = 1; i <= overtimeBellNo; i++) {
+      const id = `overtime-${i}`;
+      if (!bellsFired[id]) {
+        bellsFired[id] = true;
+        playDeskBell(i % 2 === 1 ? 2 : 3);
+      }
+    }
+  }
 }
 
 function updateProgressBar(agenda, totalElapsed) {
@@ -892,18 +910,15 @@ function endPhase() {
     agenda.actualProposal = Math.round(phaseElapsed);
     state.currentPhase = 'discussion';
     state.phaseStartTime = Date.now();
-    bellsFired = {}; // 次フェーズの自動ベルをリセット
   } else if (state.currentPhase === 'discussion') {
     agenda.actualDiscussion = Math.round(phaseElapsed);
     state.currentPhase = 'summary';
     state.phaseStartTime = Date.now();
-    bellsFired = {};
   } else if (state.currentPhase === 'summary') {
     agenda.actualSummary = Math.round(phaseElapsed);
     agenda.status = 'done';
     state.running = false;
     state.currentPhase = null;
-    bellsFired = {};
     clearInterval(state.timerInterval);
     renderRecordTable();
   }
