@@ -573,7 +573,18 @@ function updateMeetingDate() {
 function loadSettings() {
   const saved = localStorage.getItem('meetingTimerSettings');
   if (saved) {
-    state.settings = { ...state.settings, ...JSON.parse(saved) };
+    const savedSettings = JSON.parse(saved);
+    // 旧デフォルト値を保存済みの利用者にも、新しい初期値を適用する。
+    // 任意に変更された設定値は上書きしない。
+    const isLegacyDefault = savedSettings.defaultProposal === 3 &&
+      savedSettings.defaultDiscussion === 6 &&
+      savedSettings.defaultSummary === 1;
+    if (isLegacyDefault) {
+      savedSettings.defaultDiscussion = 5;
+      savedSettings.defaultSummary = 2;
+      localStorage.setItem('meetingTimerSettings', JSON.stringify(savedSettings));
+    }
+    state.settings = { ...state.settings, ...savedSettings };
   }
   document.getElementById('settingGasUrl').value = state.settings.gasUrl;
   document.getElementById('settingProposal').value = state.settings.defaultProposal;
