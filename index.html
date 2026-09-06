@@ -417,11 +417,11 @@
           </div>
           <div style="flex:1">
             <label>議論(分)</label>
-            <input type="number" id="inputDiscussionMin" value="6" min="0" max="60" style="width:100%">
+            <input type="number" id="inputDiscussionMin" value="5" min="0" max="60" style="width:100%">
           </div>
           <div style="flex:1">
             <label>まとめ(分)</label>
-            <input type="number" id="inputSummaryMin" value="1" min="0" max="30" style="width:100%">
+            <input type="number" id="inputSummaryMin" value="2" min="0" max="30" style="width:100%">
           </div>
         </div>
         <button class="add-agenda-btn" onclick="addAgenda()">+ 議題を追加</button>
@@ -468,11 +468,11 @@
     </div>
     <div class="form-group">
       <label>デフォルト 議論時間(分)</label>
-      <input type="number" id="settingDiscussion" value="6" min="1" max="60">
+      <input type="number" id="settingDiscussion" value="5" min="1" max="60">
     </div>
     <div class="form-group">
       <label>デフォルト まとめ時間(分)</label>
-      <input type="number" id="settingSummary" value="1" min="1" max="30">
+      <input type="number" id="settingSummary" value="2" min="1" max="30">
     </div>
     <div class="modal-actions">
       <button class="btn btn-cancel" onclick="closeSettings()">キャンセル</button>
@@ -499,8 +499,8 @@ let state = {
   settings: {
     gasUrl: '',
     defaultProposal: 3,
-    defaultDiscussion: 6,
-    defaultSummary: 1,
+    defaultDiscussion: 5,
+    defaultSummary: 2,
   }
 };
 
@@ -587,8 +587,8 @@ function loadSettings() {
 function saveSettings() {
   state.settings.gasUrl = document.getElementById('settingGasUrl').value.trim();
   state.settings.defaultProposal = parseInt(document.getElementById('settingProposal').value) || 3;
-  state.settings.defaultDiscussion = parseInt(document.getElementById('settingDiscussion').value) || 6;
-  state.settings.defaultSummary = parseInt(document.getElementById('settingSummary').value) || 1;
+  state.settings.defaultDiscussion = parseInt(document.getElementById('settingDiscussion').value) || 5;
+  state.settings.defaultSummary = parseInt(document.getElementById('settingSummary').value) || 2;
   localStorage.setItem('meetingTimerSettings', JSON.stringify(state.settings));
   closeSettings();
   showToast('設定を保存しました');
